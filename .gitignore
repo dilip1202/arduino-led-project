@@ -8,7 +8,6 @@ test_env/.ceedling/
 *.bin
 *.eep
 *.map
-*.cpp
 *.o
 *.d
 *.elf
