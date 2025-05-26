@@ -98,7 +98,7 @@
 :paths:
   :test:
     - +:test/**
-    - -:test/support
+    - +:test/support
   :source:
     - src/**
   :include:
@@ -189,7 +189,7 @@
   :callback_include_count: true    # Do we want cmock to include the number of calls to this callback, when using callbacks?
   :callback_after_arg_check: false # Do we want cmock to enforce an argument check first when using a callback?
   :includes:                       # You can add additional includes here, or specify the location with the options below
-    - mock_Arduino.h
+    - Arduino.h
   #:includes_h_pre_orig_header: [] 
   #:includes_h_post_orig_header: []
   #:includes_c_pre_header:  []
