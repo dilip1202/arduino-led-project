@@ -1,0 +1,29 @@
+# Ceedling build outputs
+test_env/build/
+test_env/.ceedling/
+
+# Arduino build files and temporary files
+*.hex
+*.elf
+*.bin
+*.eep
+*.map
+*.cpp
+*.o
+*.d
+*.elf
+*.log
+
+# Arduino IDE specific
+*.log
+*.tmp
+*.bak
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
