@@ -98,7 +98,7 @@
 :paths:
   :test:
     - +:test/**
- 
+    - +:test/support
   :source:
     - src/**
   :include:
