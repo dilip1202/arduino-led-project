@@ -8,20 +8,17 @@ ARDUINO_CLI_BIN="$HOME/.arduino15/bin/arduino-cli"
 
 echo "Cloning repository..."
 git clone "$REPO_URL"
-
 cd "$PROJECT_DIR"
 
 echo "Checking for Arduino CLI..."
-
 if ! command -v arduino-cli &> /dev/null; then
     echo "Arduino CLI not found. Installing..."
-    # Download and install Arduino CLI
     curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
 else
     echo "Arduino CLI found."
 fi
 
-# Initialize Arduino CLI config if not exist
+# Initialize Arduino CLI config if it doesn't exist
 if [ ! -f "$HOME/.arduino15/arduino-cli.yaml" ]; then
     echo "Initializing Arduino CLI config..."
     arduino-cli config init
@@ -40,19 +37,26 @@ fi
 echo "Compiling project..."
 arduino-cli compile --fqbn arduino:avr:uno .
 
-# Upload the compiled binary to Arduino device
-# Assuming device is connected at /dev/ttyACM0 (Linux) or /dev/cu.usbmodem* (macOS)
-echo "Uploading to Arduino..."
+# Auto-detect port and upload
+echo "Detecting Arduino port..."
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    DEVICE_PORT="/dev/ttyACM0"
+    DEVICE_PORT=$(ls /dev/ttyACM* /dev/ttyUSB* 2>/dev/null | head -n 1)
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    DEVICE_PORT=$(ls /dev/cu.usbmodem* | head -n 1)
+    DEVICE_PORT=$(ls /dev/cu.usbmodem* 2>/dev/null | head -n 1)
 else
     echo "Unsupported OS. Please upload manually."
     exit 1
 fi
 
+if [ -z "$DEVICE_PORT" ]; then
+    echo "Arduino not connected or no serial port found."
+    exit 1
+fi
+
+echo "Found Arduino on $DEVICE_PORT"
+echo "Uploading to Arduino..."
+
 arduino-cli upload -p "$DEVICE_PORT" --fqbn arduino:avr:uno .
 
-echo "Done! Your Arduino is programmed."
+echo "✅ Done! Your Arduino is programmed."
